@@ -9,7 +9,7 @@
     @if (session()->has('info'))
     <h3>{{session('info')}} </h3>
     @else
-    <form method="POST" action="/contacto">
+    <form method="POST" action="/mensajes/store">
         @csrf
         <p><label for="nombre">
             Nombre
@@ -20,6 +20,11 @@
             Email
             <input type="email" name="email" value="{{ old('email') }}">
             {{ $errors->first('email') }}
+        </label></p>
+        <p><label for="telefono">
+            Teléfono
+            <input type="text" name="telefono" value="{{ old('telefono') }}">
+            {{ $errors->first('telefono') }}
         </label></p>
         <p><label for="mensaje">
             Mensaje

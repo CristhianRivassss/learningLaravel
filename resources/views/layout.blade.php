@@ -12,8 +12,8 @@
         <ul>
             <h1> {{request()->is('/')? 'Estas en el home' : 'No estas en el home'. request()->url()}}</h1>
             <li><a href="{{ url('/') }}">Inicio</a></li>
-            <li><a href="{{ route('contacto') }}">Contacto</a></li>
-            <li><a href="{{ url('saludos') }}">Saludo</a></li>
+            <li><a href="{{ route('mensajes.create') }}">Contacto</a></li>
+            <li><a href="{{ route('saludos') }}">Saludo</a></li>
         </ul>
     </nav>
     <div class="container">
