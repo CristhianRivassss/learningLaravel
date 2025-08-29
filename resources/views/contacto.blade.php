@@ -3,8 +3,12 @@
 @section('title', 'Contacto')
 
 @section('content')
+    
     <h1>Contacto</h1>
     <p>Esta es la página de contacto.</p>
+    @if (session()->has('info'))
+    <h3>{{session('info')}} </h3>
+    @else
     <form method="POST" action="/contacto">
         @csrf
         <p><label for="nombre">
@@ -24,4 +28,5 @@
         </label></p>
         <input type="submit" value="Enviar">
     </form>
+@endif
 @endsection

@@ -3,6 +3,11 @@
 @section('title', 'Saludos')
 
 @section('content')
+    @if (session('info'))
+        <div class="alert alert-success">
+            {{ session('info') }}
+        </div>
+    @endif
     <h1>Hola, {{ $nombre }}</h1>
     <p>Bienvenido a nuestra aplicación.</p>
     <ul>
