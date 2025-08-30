@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\Return_;
 use Carbon\Carbon;
+use App\Models\Message;
 
 class MessagesController extends Controller
 {
@@ -14,7 +15,7 @@ class MessagesController extends Controller
      */
     public function index()
     {
-        $messages = DB::table('messages')->get();
+        $messages=Message::all();
         return view('messages.index', ['messages' => $messages]);
     }
 
@@ -31,14 +32,31 @@ class MessagesController extends Controller
      */
     public function store(Request $request)
     {
-        DB::table('messages')->insert([
+
+        Message::create($request->only([
+            'nombre',
+            'email',
+            'telefono',
+            'mensaje'
+        ]));
+
+        return redirect()->route('mensajes.index');
+    /*     $message= new Message;
+        $message->nombre=$request->input('nombre');
+        $message->email=$request->input('email');
+        $message->telefono=$request->input('telefono');
+        $message->mensaje=$request->input('mensaje');
+        $message->save();
+ */
+        
+       /*  DB::table('messages')->insert([
             'nombre' => $request->input('nombre'),
             'email' => $request->input('email'),
             'telefono' => $request->input('telefono'),
             'mensaje' => $request->input('mensaje'),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-        ]);
+        ]); */
         return redirect()->route('mensajes.index');
     }
 
