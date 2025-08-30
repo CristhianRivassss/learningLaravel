@@ -6,6 +6,7 @@
 
 <head>
     <title>@yield('title', 'Mi sitio')</title>
+    <link rel="stylesheet" href="{{ asset('css/tables.css') }}">
 </head>
 <body>
     <nav>
@@ -14,6 +15,7 @@
             <li><a href="{{ url('/') }}">Inicio</a></li>
             <li><a href="{{ route('mensajes.create') }}">Contacto</a></li>
             <li><a href="{{ route('saludos') }}">Saludo</a></li>
+            <li><a href="{{ route('mensajes.index') }}">Mensajes</a></li>
         </ul>
     </nav>
     <div class="container">

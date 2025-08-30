@@ -1,0 +1,162 @@
+/* Estilos para tablas elegantes */
+.table-elegant {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+/* Encabezados de la tabla */
+.table-elegant thead th {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: 600;
+    padding: 15px 20px;
+    text-align: left;
+    border: none;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Celdas del cuerpo */
+.table-elegant tbody td {
+    padding: 12px 20px;
+    border-bottom: 1px solid #e0e0e0;
+    color: #333;
+    transition: background-color 0.3s ease;
+}
+
+/* Filas alternadas */
+.table-elegant tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+/* Hover effect */
+.table-elegant tbody tr:hover {
+    background-color: #e3f2fd;
+    transform: translateY(-1px);
+    transition: all 0.3s ease;
+}
+
+/* Última fila sin borde */
+.table-elegant tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Tabla responsive */
+.table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+}
+
+/* Variante compacta */
+.table-elegant.compact tbody td {
+    padding: 8px 15px;
+}
+
+.table-elegant.compact thead th {
+    padding: 10px 15px;
+}
+
+/* Variante con bordes */
+.table-elegant.bordered {
+    border: 1px solid #dee2e6;
+}
+
+.table-elegant.bordered thead th,
+.table-elegant.bordered tbody td {
+    border-right: 1px solid #e0e0e0;
+}
+
+.table-elegant.bordered thead th:last-child,
+.table-elegant.bordered tbody td:last-child {
+    border-right: none;
+}
+
+/* Estilos adicionales para formularios que se vean igual */
+.form-elegant {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+}
+
+.form-elegant label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+.form-elegant input[type="text"],
+.form-elegant input[type="email"],
+.form-elegant input[type="tel"],
+.form-elegant textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 15px;
+}
+
+.form-elegant input[type="text"]:focus,
+.form-elegant input[type="email"]:focus,
+.form-elegant input[type="tel"]:focus,
+.form-elegant textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-elegant button,
+.form-elegant input[type="submit"] {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-elegant button:hover,
+.form-elegant input[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* Mensajes de alerta elegantes */
+.alert-elegant {
+    padding: 15px 20px;
+    margin: 20px 0;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.alert-elegant.success {
+    background-color: #d4edda;
+    border-left: 4px solid #28a745;
+    color: #155724;
+}
+
+.alert-elegant.error {
+    background-color: #f8d7da;
+    border-left: 4px solid #dc3545;
+    color: #721c24;
+}
+
+.alert-elegant.info {
+    background-color: #d1ecf1;
+    border-left: 4px solid #17a2b8;
+    color: #0c5460;
+}

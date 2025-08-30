@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\Return_;
+use Carbon\Carbon;
 
 class MessagesController extends Controller
 {
@@ -35,10 +36,10 @@ class MessagesController extends Controller
             'email' => $request->input('email'),
             'telefono' => $request->input('telefono'),
             'mensaje' => $request->input('mensaje'),
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
-        Return "guardado perras";
+        return redirect()->route('mensajes.index');
     }
 
     /**
@@ -46,7 +47,8 @@ class MessagesController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $message = DB::table('messages')->where('id', $id)->first();
+        return view('messages.show', ['message' => $message]);
     }
 
     /**
@@ -54,7 +56,8 @@ class MessagesController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $message = DB::table('messages')->where('id',$id)->first();
+        return view('messages.edit', ['message' => $message]);
     }
 
     /**
@@ -62,7 +65,14 @@ class MessagesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        DB::table('messages')->where('id', $id)->update([
+            'nombre' => $request->input('nombre'),
+            'email' => $request->input('email'),
+            'telefono' => $request->input('telefono'),
+            'mensaje' => $request->input('mensaje'),
+            'updated_at' => Carbon::now(),
+        ]);
+        return redirect()->route('mensajes.index');
     }
 
     /**
@@ -70,6 +80,7 @@ class MessagesController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        DB::table('messages')->where('id', $id)->delete();
+        return redirect()->route('mensajes.index')->with('info', 'Mensaje eliminado correctamente');
     }
 }
