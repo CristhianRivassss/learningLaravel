@@ -10,6 +10,7 @@ use App\Models\Message;
 
 class MessagesController extends Controller
 {
+ 
     /**
      * Display a listing of the resource.
      */
@@ -47,7 +48,7 @@ class MessagesController extends Controller
         $message->telefono=$request->input('telefono');
         $message->mensaje=$request->input('mensaje');
         $message->save();
- */
+ 
         
        /*  DB::table('messages')->insert([
             'nombre' => $request->input('nombre'),
@@ -57,7 +58,6 @@ class MessagesController extends Controller
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]); */
-        return redirect()->route('mensajes.index');
     }
 
     /**
@@ -65,7 +65,8 @@ class MessagesController extends Controller
      */
     public function show(string $id)
     {
-        $message = DB::table('messages')->where('id', $id)->first();
+       
+        $message = Message::findOrFail($id);
         return view('messages.show', ['message' => $message]);
     }
 
@@ -74,7 +75,7 @@ class MessagesController extends Controller
      */
     public function edit(string $id)
     {
-        $message = DB::table('messages')->where('id',$id)->first();
+        $message = Message::findOrFail($id);
         return view('messages.edit', ['message' => $message]);
     }
 
@@ -83,13 +84,14 @@ class MessagesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        DB::table('messages')->where('id', $id)->update([
-            'nombre' => $request->input('nombre'),
-            'email' => $request->input('email'),
-            'telefono' => $request->input('telefono'),
-            'mensaje' => $request->input('mensaje'),
-            'updated_at' => Carbon::now(),
-        ]);
+        $message = Message::findOrFail($id);
+        $message->update($request->only([
+            'nombre',
+            'email',
+            'telefono',
+            'mensaje'
+        ]));
+        
         return redirect()->route('mensajes.index');
     }
 
@@ -98,7 +100,7 @@ class MessagesController extends Controller
      */
     public function destroy(string $id)
     {
-        DB::table('messages')->where('id', $id)->delete();
+        Message::findOrFail($id)->delete();
         return redirect()->route('mensajes.index')->with('info', 'Mensaje eliminado correctamente');
     }
 }

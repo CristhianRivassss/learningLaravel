@@ -15,7 +15,15 @@
             <li><a href="{{ url('/') }}">Inicio</a></li>
             <li><a href="{{ route('mensajes.create') }}">Contacto</a></li>
             <li><a href="{{ route('saludos') }}">Saludo</a></li>
-            <li><a href="{{ route('mensajes.index') }}">Mensajes</a></li>
+            @if (Auth::check())
+                <li><a href="{{ route('mensajes.index') }}">Mensajes</a></li>
+                <form method ="POST" action="{{route('logout')}}">
+                    @csrf
+                    <button type="submit" onclick = "return confirm('¿Estás seguro de que deseas cerrar sesión?')">Logout {{ Auth::user()->name }}</button>
+                </form>
+            @else
+                <li><a href="{{ route('login') }}">Login</a></li>
+            @endif
         </ul>
     </nav>
     <div class="container">
