@@ -1,4 +1,17 @@
+/* estilos míos aprendidos */
+nav{
+    width: 100%;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+}
+
+
+
+
 /* Estilos para tablas elegantes */
+
 .table-elegant {
     width: 100%;
     border-collapse: collapse;

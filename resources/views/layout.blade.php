@@ -1,49 +1,89 @@
 <!DOCTYPE html>
 <html>
-    <style>
-        
-    </style>
-
 <head>
     <title>@yield('title', 'Mi sitio')</title>
-    <link rel="stylesheet" href="{{ asset('css/tables.css') }}">
+    
+    <!-- Bootstrap CSS LOCAL -->
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    
+    <!-- Vite Assets (CSS + JS) -->
+    @vite(['resources/js/app.js'])
 </head>
 <body>
-    <nav>
-        <ul>
-            <h1> {{request()->is('/')? 'Estas en el home' : 'No estas en el home'. request()->url()}}</h1>
-            <li><a href="{{ url('/') }}">Inicio</a></li>
-            <li><a href="{{ route('mensajes.create') }}">Contacto</a></li>
-            <li><a href="{{ route('saludos') }}">Saludo</a></li>
-            @if (Auth::check())
-                <li><a href="{{ route('mensajes.index') }}">Mensajes</a></li>
-                <form method ="POST" action="{{route('logout')}}">
-                    @csrf
-                    <button type="submit" onclick = "return confirm('¿Estás seguro de que deseas cerrar sesión?')">Logout {{ Auth::user()->name }}</button>
-                </form>
-            @else
-                <li><a href="{{ route('login') }}">Login</a></li>
-            @endif
-        </ul>
+    <!-- Navigation Bootstrap -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url('/') }}">
+               Aprendiendo Laravel
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">
+                            Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('mensajes.create') ? 'active' : '' }}" href="{{ route('mensajes.create') }}">
+                            Contacto
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('saludos') ? 'active' : '' }}" href="{{ route('saludos') }}">
+                            Saludo
+                        </a>
+                    </li>
+                    @if (Auth::check())
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('mensajes.index') ? 'active' : '' }}" href="{{ route('mensajes.index') }}">
+                                Mensajes
+                            </a>
+                        </li>
+                    @endif
+                </ul>
+                
+                <!-- Auth buttons -->
+                <ul class="navbar-nav">
+                    @if (Auth::check())
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                {{ Auth::user()->name }}
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item" 
+                                                onclick="return confirm('¿Estás seguro de cerrar sesión?')">
+                                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">
+                                <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                            </a>
+                        </li>
+                    @endif
+                </ul>
+            </div>
+        </div>
     </nav>
-    <div class="container">
+
+    <!-- Main Content Container -->
+    <div class="container mt-4">
         @yield('content')
     </div>
-    <style>
-        nav ul {
-            list-style: none;
-            padding: 0;
-        }
-        nav ul li {
-            display: inline;
-            margin-right: 10px;
-        }
-        nav ul li a {
-            text-decoration: none;
-            color: blue;
-        }
-        nav ul li a.active {
-            color: green;
-            font-weight: bold;
-        }
-    </style>
+    
+    <!-- Bootstrap JavaScript LOCAL -->
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

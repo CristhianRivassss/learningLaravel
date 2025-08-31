@@ -8,6 +8,7 @@ use PhpParser\Node\Stmt\Return_;
 use Carbon\Carbon;
 use App\Models\Message;
 
+
 class MessagesController extends Controller
 {
  
@@ -41,7 +42,7 @@ class MessagesController extends Controller
             'mensaje'
         ]));
 
-        return redirect()->route('mensajes.index');
+        return redirect('/');
     /*     $message= new Message;
         $message->nombre=$request->input('nombre');
         $message->email=$request->input('email');
