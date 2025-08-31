@@ -44,6 +44,14 @@
                                 Mensajes
                             </a>
                         </li>
+                        
+                        @can('admin-only')
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('usuarios.index') ? 'active' : '' }}" href="{{ route('usuarios.index') }}">
+                                    Usuarios
+                                </a>
+                            </li>
+                        @endcan
                     @endif
                 </ul>
                 

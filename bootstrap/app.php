@@ -12,9 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // Registrar el middleware auth con un alias
+        // Registrar solo el middleware de roles personalizado
         $middleware->alias([
-            'auth' => \App\Http\Middleware\AuthMiddleware::class,
+            'role' => \App\Http\Middleware\CheckRoles::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

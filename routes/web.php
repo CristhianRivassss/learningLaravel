@@ -4,11 +4,17 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\LoggingController;
+use App\Http\Controllers\UsersController;
 use App\Models\User;
 
-Route::get('/',[PagesController::class, 'index']);
+// Usando Gates de Laravel (más elegante)
+Route::middleware(['auth', 'can:admin-only'])->group(function () {
+    Route::resource('usuarios', UsersController::class);
+    // Otras rutas que solo los admins pueden acceder
+});
 
-Route::post('contacto', [PagesController::class, 'mensajes']);
+
+Route::get('/',[PagesController::class, 'index']);
 Route::get('saludos/{nombre?}', [PagesController::class, 'saludos'])->name('saludos');
 
 
@@ -33,11 +39,17 @@ Route::get('login', [LoggingController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoggingController::class, 'login'])->name('login.post');
 Route::post('logout', [LoggingController::class, 'logout'])->name('logout');
 
-Route::get('test',function(){
+
+
+/* Usuarios */
+
+/* Route::resource('usuarios', UsersController::class); */
+/* Route::get('test',function(){
     $user = new User;
-    $user->name = 'John Doe';
-    $user->email = 'john@example.com';
-    $user->password = bcrypt('password');
+    $user->name = 'Rivas';
+    $user->email = 'cris@gmail.com';
+    $user->password = bcrypt('123456');
+    $user->role = 'moderador';
     $user->save();
     return 'User created successfully'.$user->all();
-});
+}); */

@@ -34,12 +34,23 @@ class MessagesController extends Controller
      */
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'nombre' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'telefono' => 'nullable|string|max:20',
+            'mensaje' => 'required|string|min:2',
+        ]);
 
-        Message::create($request->only([
-            'nombre',
-            'email',
-            'telefono',
-            'mensaje'
+        Message::create($validated);
+
+        return redirect('/');
+    /*     $message= new Message;
+        $message->nombre=$request->input('nombre');
+        $message->email=$request->input('email');
+        $message->telefono=$request->input('telefono');
+        $message->mensaje=$request->input('mensaje');
+        $message->save();
+
         ]));
 
         return redirect('/');
@@ -76,6 +87,7 @@ class MessagesController extends Controller
      */
     public function edit(string $id)
     {
+        
         $message = Message::findOrFail($id);
         return view('messages.edit', ['message' => $message]);
     }
