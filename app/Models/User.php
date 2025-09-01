@@ -21,8 +21,19 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
     ];
+
+    // Relación con tabla roles
+    public function roleModel()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+    
+    // Método helper para obtener el nombre del rol
+    public function getRoleName()
+    {
+        return $this->roleModel->name ?? 'usuario' ;
+    }
 
     /**
      * The attributes that should be hidden for serialization.

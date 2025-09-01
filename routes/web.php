@@ -6,12 +6,20 @@ use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\LoggingController;
 use App\Http\Controllers\UsersController;
 use App\Models\User;
+use App\Models\Role;
 
-// Usando Gates de Laravel (más elegante)
+// Usando Gates de Laravel - Un solo lugar para lógica de permisos
 Route::middleware(['auth', 'can:admin-only'])->group(function () {
     Route::resource('usuarios', UsersController::class);
-    // Otras rutas que solo los admins pueden acceder
+    // Otras rutas para gestionar usuarios (admin y moderador)
 });
+
+
+Route::get('roles', function(){
+    return Role::with('users')->get();
+});
+
+
 
 
 Route::get('/',[PagesController::class, 'index']);

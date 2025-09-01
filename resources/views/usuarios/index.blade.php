@@ -56,7 +56,7 @@
                                 <div class="fw-bold">{{ $user->email}}</div>
                             </td>
                             <td>
-                                <div class="fw-bold">{{ $user->role }}</div>
+                                <div class="fw-bold">{{ $user->getRoleName() }}</div>
                             </td>
                             <td>
                                 <div class="fw-bold">{{ $user->created_at}}</div>

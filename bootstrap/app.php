@@ -12,10 +12,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // Registrar solo el middleware de roles personalizado
-        $middleware->alias([
-            'role' => \App\Http\Middleware\CheckRoles::class,
-        ]);
+        // Laravel maneja autorización con Gates nativamente
+        // No necesitamos middleware personalizado
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (ModelNotFoundException $e, $request) {

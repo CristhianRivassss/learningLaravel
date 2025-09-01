@@ -23,13 +23,32 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
         
-        // Definir Gates para autorización
+        // Gates HÍBRIDOS: Funcionan con tabla roles O campo role (string)
         Gate::define('manage-users', function ($user) {
-            return in_array($user->role, ['admin', 'moderador']);
+            // Obtener el nombre del rol usando el helper
+            $roleName = $user->getRoleName();
+            
+            // Verificar si tiene permisos para gestionar usuarios
+            return in_array($roleName, ['admin', 'editor']);
         });
         
         Gate::define('admin-only', function ($user) {
-            return $user->role === 'admin';
+            // Obtener el nombre del rol usando el helper
+            $roleName = $user->getRoleName();
+            
+            // Solo admins pueden pasar
+            return $roleName === 'admin';
+        });
+        
+        // Nuevos Gates más específicos
+        Gate::define('moderator-access', function ($user) {
+            $roleName = $user->getRoleName();
+            return in_array($roleName, ['admin', 'moderador']);
+        });
+        
+        Gate::define('financial-access', function ($user) {
+            $roleName = $user->getRoleName();
+            return in_array($roleName, ['admin', 'contador']);
         });
     }
 }
