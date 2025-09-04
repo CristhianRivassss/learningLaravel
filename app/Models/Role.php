@@ -12,9 +12,9 @@ class Role extends Model
         'description'
     ];
     
-    // Relación: Un rol tiene muchos usuarios
+    // Relación muchos a muchos con usuarios
     public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsToMany(User::class, 'assigned_roles', 'role_id', 'user_id');
     }
 }

@@ -23,32 +23,33 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
         
-        // Gates HÍBRIDOS: Funcionan con tabla roles O campo role (string)
+        // Gates con NUEVA estructura de roles (tabla pivote)
         Gate::define('manage-users', function ($user) {
-            // Obtener el nombre del rol usando el helper
-            $roleName = $user->getRoleName();
-            
-            // Verificar si tiene permisos para gestionar usuarios
-            return in_array($roleName, ['admin', 'editor']);
+            // Verificar si tiene rol admin o editor
+            return $user->hasRole('admin') || $user->hasRole('editor');
         });
         
         Gate::define('admin-only', function ($user) {
-            // Obtener el nombre del rol usando el helper
-            $roleName = $user->getRoleName();
-            
             // Solo admins pueden pasar
-            return $roleName === 'admin';
+            return $user->hasRole('admin');
+        });
+        
+        Gate::define('user-authenticated', function ($user) {
+            // Cualquier usuario logueado puede pasar
+            return true; // Si llega aquí, ya está autenticado
         });
         
         // Nuevos Gates más específicos
         Gate::define('moderator-access', function ($user) {
-            $roleName = $user->getRoleName();
-            return in_array($roleName, ['admin', 'moderador']);
+            return $user->hasRole('admin') || $user->hasRole('moderador');
         });
         
         Gate::define('financial-access', function ($user) {
-            $roleName = $user->getRoleName();
-            return in_array($roleName, ['admin', 'contador']);
+            return $user->hasRole('admin') || $user->hasRole('contador');
+        });
+        
+        Gate::define('editor-access', function ($user) {
+            return $user->hasRole('admin') || $user->hasRole('editor');
         });
     }
 }

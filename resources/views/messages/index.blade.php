@@ -53,7 +53,10 @@
                                 <i class="fas fa-calendar me-1"></i> Fecha
                             </th>
                             <th scope="col" class="text-center">
-                                <i class="fas fa-cogs me-1"></i> Acciones
+                                <i class="fas fa-cogs me-1"></i> Usuario
+                            </th>
+                            <th scope="col" class="text-center">
+                                <i class="fas fa-user me-1"></i> Acciones
                             </th>
                         </tr>
                     </thead>
@@ -90,6 +93,16 @@
                                     {{ $message->created_at->format('H:i') }}
                                 </small>
                             </td>
+                            @if ($message->user)
+                            <td class="text-center">
+                                {{ $message->user->name }}
+                            </td>
+                            @else
+                            <td class="text-center">
+                                Invitado
+                            </td>
+                            @endif
+                          
                             <td>
                                 <div class="btn-group" role="group">
                                     <!-- Ver -->

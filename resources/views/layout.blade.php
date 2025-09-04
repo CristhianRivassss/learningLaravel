@@ -45,13 +45,13 @@
                             </a>
                         </li>
                         
-                        @can('admin-only')
+                        
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('usuarios.index') ? 'active' : '' }}" href="{{ route('usuarios.index') }}">
                                     Usuarios
                                 </a>
                             </li>
-                        @endcan
+                        
                     @endif
                 </ul>
                 
@@ -63,6 +63,12 @@
                                 {{ Auth::user()->name }}
                             </a>
                             <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('usuarios.edit', Auth::user()->id) }}">
+                                        <i class="fas fa-user-edit"></i> Editar Perfil
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <form method="POST" action="{{ route('logout') }}" class="d-inline">
                                         @csrf

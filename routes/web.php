@@ -4,14 +4,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\LoggingController;
-use App\Http\Controllers\UsersController;
+use App\Http\Controllers\UserController;
 use App\Models\User;
 use App\Models\Role;
 
-// Usando Gates de Laravel - Un solo lugar para lógica de permisos
-Route::middleware(['auth', 'can:admin-only'])->group(function () {
-    Route::resource('usuarios', UsersController::class);
-    // Otras rutas para gestionar usuarios (admin y moderador)
+// Quitar middleware 'can:admin-only' - La Policy se encarga de los permisos
+Route::middleware(['auth'])->group(function () {
+    // Ruta resource completa para gestión de usuarios
+    // UserPolicy manejará los permisos: propio perfil O admin
+    Route::resource('usuarios', UserController::class);
 });
 
 

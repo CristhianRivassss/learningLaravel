@@ -22,8 +22,9 @@ class CreateMessageRequest extends FormRequest
     public function rules(): array
     {
         return [
-             'nombre' => 'required|string|max:255',
+            'nombre' => 'required|string|max:255',
             'email' => 'required|email|max:255',
+            'telefono' => 'nullable|string|max:20',
             'mensaje' => 'required|string|min:2',
         ];
     }

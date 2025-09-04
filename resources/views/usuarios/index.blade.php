@@ -21,10 +21,14 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
+    <div class="text-end">
+        <a href="{{route('usuarios.create')}}" class="btn btn-primary m-3">Crear Usuario</a>
+    </div>
 
     <!-- Tabla Bootstrap Responsive -->
     <div class="card shadow-sm">
         <div class="card-body p-0">
+            
             <div class="table-responsive">
                 <table class="table table-hover table-striped mb-0">
                     <thead class="table-dark">
@@ -56,10 +60,28 @@
                                 <div class="fw-bold">{{ $user->email}}</div>
                             </td>
                             <td>
-                                <div class="fw-bold">{{ $user->getRoleName() }}</div>
+                                <div class="fw-bold">{{ $user->getRoleNames() }}</div>
                             </td>
                             <td>
                                 <div class="fw-bold">{{ $user->created_at}}</div>
+                            </td>
+                            <td>
+                                <a class = "btn btn-info btn-xs"
+                                   href="{{ route('usuarios.edit', $user) }}">
+                                Editar</a>
+                                <br>
+                                 <form method="POST" action="{{ route('usuarios.destroy', $user) }}" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" 
+                                                class="btn btn-outline-danger btn-sm"
+                                                data-bs-toggle="tooltip" 
+                                                title="Eliminar mensaje"
+                                                onclick="return confirm('⚠️ ¿Estás seguro de eliminar este mensaje?\n\nEsta acción no se puede deshacer.')">
+                                            <i class="fas fa-trash"></i>
+                                            <span class="d-none d-md-inline ms-1">Eliminar</span>
+                                        </button>
+                                    </form>
                             </td>
                         </tr>
                         @empty

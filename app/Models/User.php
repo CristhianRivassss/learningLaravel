@@ -23,17 +23,25 @@ class User extends Authenticatable
         'password',
     ];
 
-    // Relación con tabla roles
-    public function roleModel()
+    // Relación muchos a muchos con roles
+    public function roles()
     {
-        return $this->belongsTo(Role::class, 'role_id');
+        return $this->belongsToMany(Role::class, 'assigned_roles', 'user_id', 'role_id');
     }
     
-    // Método helper para obtener el nombre del rol
-    public function getRoleName()
+    // Método para verificar si tiene un rol específico
+    public function hasRole($roleName)
     {
-        return $this->roleModel->name ?? 'usuario' ;
+        return $this->roles()->where('name', $roleName)->exists();
     }
+    
+    // Método helper para obtener roles como string
+    public function getRoleNames()
+    {
+        return $this->roles->pluck('name')->join(', ');
+    }
+    
+    // Verificar si es admin
 
     /**
      * The attributes that should be hidden for serialization.
@@ -44,6 +52,16 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+    public function isAdmin()
+    {
+        return $this->hasRole('admin');
+    }
+
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
 
     /**
      * Get the attributes that should be cast.

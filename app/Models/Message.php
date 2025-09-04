@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+Use \App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
@@ -11,6 +11,15 @@ class Message extends Model
         'nombre',
         'email',
         'telefono',
-        'mensaje'
+        'mensaje',
+        'user_id'
     ];
+
+    /**
+     * Relación con el modelo User
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
