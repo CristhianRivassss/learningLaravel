@@ -49,6 +49,9 @@
                             <th scope="col" class="d-none d-lg-table-cell">
                                 <i class="fas fa-comment me-1"></i> Mensaje
                             </th>
+                            <th>
+                                <i class="fas fa-sticky-note me-1"></i> Nota
+                            </th>
                             <th scope="col" class="d-none d-md-table-cell">
                                 <i class="fas fa-calendar me-1"></i> Fecha
                             </th>
@@ -86,6 +89,23 @@
                                     {{ Str::limit($message->mensaje, 50) }}
                                 </div>
                             </td>
+                            <td>
+                                @if($message->notes)
+                                    <div class="note-preview">
+                                        {{ Str::limit($message->notes->body, 50) }}
+                                    </div>
+                                @else
+                                     {{-- <a href="{{ route('notes.create', $message->id) }}"  --}}
+                                       class="btn btn-outline-primary btn-sm"
+                                       data-bs-toggle="tooltip" 
+                                       title="Ver mensaje completo">
+                                        <i class="fas fa-eye"></i>
+                                        <span class="d-none d-md-inline ms-1">Agregar nota</span>
+                                    </a>
+                                @endif
+                            </td>
+
+
                             <td class="d-none d-md-table-cell">
                                 <small class="text-muted">
                                     {{ $message->created_at->format('d/m/Y') }}

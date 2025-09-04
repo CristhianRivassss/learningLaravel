@@ -42,9 +42,13 @@
                             <th scope="col" class="d-none d-lg-table-cell">
                                 <i class="fas fa-comment me-1"></i> Role
                             </th>
+                            <th scope="col" class="d-none d-lg-table-cell">
+                                <i class="fas fa-comment me-1"></i> Notas
+                            </th>
                             <th scope="col" class="text-center">
                                 <i class="fas fa-cogs me-1"></i> Created At
                             </th>
+
                             <th scope="col" class="text-center">
                                 <i class="fas fa-cogs me-1"></i> Acciones
                             </th>
@@ -61,6 +65,9 @@
                             </td>
                             <td>
                                 <div class="fw-bold">{{ $user->getRoleNames() }}</div>
+                            </td>
+                            <td>
+                                <div class="fw-bold">{{ optional($user->note)->body ?? '' }}</div>
                             </td>
                             <td>
                                 <div class="fw-bold">{{ $user->created_at}}</div>
