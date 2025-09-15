@@ -93,9 +93,11 @@
                                 @if($message->notes)
                                     <div class="note-preview">
                                         {{ Str::limit($message->notes->body, 50) }}
+                                        <br>
+                                        {{ Str::limit($message->tags->pluck('name')->implode(', '), 50) }}
                                     </div>
                                 @else
-                                     {{-- <a href="{{ route('notes.create', $message->id) }}"  --}}
+                                     <a href="{{ route('mensajes.create', $message->id) }}"
                                        class="btn btn-outline-primary btn-sm"
                                        data-bs-toggle="tooltip" 
                                        title="Ver mensaje completo">

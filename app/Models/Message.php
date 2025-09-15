@@ -25,4 +25,8 @@ class Message extends Model
     public function notes(){
         return $this->morphOne(Note::class, 'notable');
     }
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
+    }
 }

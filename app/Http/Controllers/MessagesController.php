@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use App\Models\Message;
 use App\Http\Requests\CreateMessageRequest;
 use App\Models\User;
+use App\Events\MessageSent;
 
 class MessagesController extends Controller
 {
@@ -43,8 +44,11 @@ class MessagesController extends Controller
             $validated['user_id'] = Auth::id();
         }
 
-        Message::create($validated);
-
+        $message = Message::create($validated);
+        event(new MessageSent($message));
+        /* Mail::send('emails.contact',['data' => $validated],function($m)use ($validated){
+            $m->to($validated['email'], $validated['nombre'])->subject('Nuevo mensaje de contacto');
+        }); */
         return redirect('/')->with('success', 'Mensaje enviado correctamente');
     /*     $message= new Message;
         $message->nombre=$request->input('nombre');
