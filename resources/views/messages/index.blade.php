@@ -9,7 +9,7 @@
             <p class="text-muted">Gestiona todos los mensajes de contacto</p>
         </div>
         <div>
-            <span class="badge bg-primary fs-6">{{ count($messages) }} mensajes</span>
+            <span class="badge bg-primary fs-6">{{ $messages->total() }} mensajes</span>
         </div>
     </div>
 
@@ -174,6 +174,7 @@
                                 </div>
                             </td>
                         </tr>
+
                         @endforelse
                     </tbody>
                 </table>
@@ -181,11 +182,19 @@
         </div>
     </div>
 
+    <!-- Enlaces de paginación -->
+    @if($messages->hasPages())
+        <div class="d-flex justify-content-center mt-4">
+            {{ $messages->links() }}
+        </div>
+    @endif
+
     <!-- Footer con información adicional -->
-    @if(count($messages) > 0)
+    @if($messages->total() > 0)
         <div class="mt-4 text-center">
             <small class="text-muted">
-                Total: {{ count($messages) }} mensajes | 
+                Total: {{ $messages->total() }} mensajes | 
+                Mostrando: {{ $messages->count() }} en esta página | 
                 Último actualizado: {{ now()->format('d/m/Y H:i') }}
             </small>
         </div>

@@ -7,7 +7,10 @@ use App\Http\Controllers\LoggingController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
 use App\Models\Role;
-
+use Illuminate\Support\Facades\DB;
+/* DB::listen(function ($query) {
+    echo "<pre>($query->sql)</pre>";
+}); */
 // Quitar middleware 'can:admin-only' - La Policy se encarga de los permisos
 Route::middleware(['auth'])->group(function () {
     // Ruta resource completa para gestión de usuarios

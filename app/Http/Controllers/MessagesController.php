@@ -11,6 +11,7 @@ use App\Models\Message;
 use App\Http\Requests\CreateMessageRequest;
 use App\Models\User;
 use App\Events\MessageSent;
+use Illuminate\Support\Facades\Cache;
 
 class MessagesController extends Controller
 {
@@ -19,10 +20,18 @@ class MessagesController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $messages=Message::all();
+      {
+        $currentPage = request('page', 1);
+        $key = 'messages.page.' . $currentPage;
+
+        // Cachear por página específica
+        $messages = Cache::rememberForever($key, function () use ($currentPage) {
+            // Forzar la página específica en la consulta
+            return Message::paginate(10, ['*'], 'page', $currentPage);
+        });
+
         return view('messages.index', ['messages' => $messages]);
-    }
+    }  
 
     /**
      * Show the form for creating a new resource.
@@ -45,6 +54,7 @@ class MessagesController extends Controller
         }
 
         $message = Message::create($validated);
+        Cache::flush(); // Limpiar caché al crear un nuevo mensaje
         event(new MessageSent($message));
         /* Mail::send('emails.contact',['data' => $validated],function($m)use ($validated){
             $m->to($validated['email'], $validated['nombre'])->subject('Nuevo mensaje de contacto');
