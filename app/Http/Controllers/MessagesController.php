@@ -12,24 +12,23 @@ use App\Http\Requests\CreateMessageRequest;
 use App\Models\User;
 use App\Events\MessageSent;
 use Illuminate\Support\Facades\Cache;
+use App\Repositories\Messages;
 
 class MessagesController extends Controller
 {
+    protected Messages $messageRepository;
+
+    public function __construct(Messages $messageRepository)
+    {
+        $this->messageRepository = $messageRepository;
+    }
  
     /**
      * Display a listing of the resource.
      */
     public function index()
       {
-        $currentPage = request('page', 1);
-        $key = 'messages.page.' . $currentPage;
-
-        // Cachear por página específica
-        $messages = Cache::rememberForever($key, function () use ($currentPage) {
-            // Forzar la página específica en la consulta
-            return Message::paginate(10, ['*'], 'page', $currentPage);
-        });
-
+        $messages = $this->messageRepository->getPaginated();
         return view('messages.index', ['messages' => $messages]);
     }  
 
@@ -46,46 +45,18 @@ class MessagesController extends Controller
      */
     public function store(CreateMessageRequest $request)
     {
-        // Ya no necesitas validate() - CreateMessageRequest lo hace automáticamente
+        // CreateMessageRequest ya validó automáticamente
         $validated = $request->validated();
+        
         if (Auth::check()) {
-            // Agregar el ID del usuario autenticado
             $validated['user_id'] = Auth::id();
         }
 
-        $message = Message::create($validated);
-        Cache::flush(); // Limpiar caché al crear un nuevo mensaje
-        event(new MessageSent($message));
-        /* Mail::send('emails.contact',['data' => $validated],function($m)use ($validated){
-            $m->to($validated['email'], $validated['nombre'])->subject('Nuevo mensaje de contacto');
-        }); */
+
+
+        $message = $this->messageRepository->store($validated);
+        event(new MessageSent($message)); 
         return redirect('/')->with('success', 'Mensaje enviado correctamente');
-    /*     $message= new Message;
-        $message->nombre=$request->input('nombre');
-        $message->email=$request->input('email');
-        $message->telefono=$request->input('telefono');
-        $message->mensaje=$request->input('mensaje');
-        $message->save();
-
-        ]));
-
-        return redirect('/');
-    /*     $message= new Message;
-        $message->nombre=$request->input('nombre');
-        $message->email=$request->input('email');
-        $message->telefono=$request->input('telefono');
-        $message->mensaje=$request->input('mensaje');
-        $message->save();
- 
-        
-       /*  DB::table('messages')->insert([
-            'nombre' => $request->input('nombre'),
-            'email' => $request->input('email'),
-            'telefono' => $request->input('telefono'),
-            'mensaje' => $request->input('mensaje'),
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]); */
     }
 
     /**
@@ -93,8 +64,7 @@ class MessagesController extends Controller
      */
     public function show(string $id)
     {
-       
-        $message = Message::findOrFail($id);
+       $message = $this->messageRepository->findById($id);
         return view('messages.show', ['message' => $message]);
     }
 
@@ -103,8 +73,7 @@ class MessagesController extends Controller
      */
     public function edit(string $id)
     {
-        
-        $message = Message::findOrFail($id);
+        $message = $this->messageRepository->findById($id);
         return view('messages.edit', ['message' => $message]);
     }
 
@@ -113,13 +82,7 @@ class MessagesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $message = Message::findOrFail($id);
-        $message->update($request->only([
-            'nombre',
-            'email',
-            'telefono',
-            'mensaje'
-        ]));
+        $this->messageRepository->update($id, $request);
         
         return redirect()->route('mensajes.index');
     }
@@ -129,7 +92,7 @@ class MessagesController extends Controller
      */
     public function destroy(string $id)
     {
-        Message::findOrFail($id)->delete();
+        $this->messageRepository->destroy($id);
         return redirect()->route('mensajes.index')->with('info', 'Mensaje eliminado correctamente');
     }
 }

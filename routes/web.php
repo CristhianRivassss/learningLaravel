@@ -2,10 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PagesController;
-use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\LoggingController;
 use App\Http\Controllers\UserController;
-use App\Models\User;
+use App\Http\Controllers\MessagesController;
 use App\Models\Role;
 use Illuminate\Support\Facades\DB;
 /* DB::listen(function ($query) {
