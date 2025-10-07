@@ -13,14 +13,15 @@ use App\Models\User;
 use App\Events\MessageSent;
 use Illuminate\Support\Facades\Cache;
 use App\Repositories\Messages;
-
+use App\Repositories\CacheMessages;
+use App\Repositories\MessagesInterface;
 class MessagesController extends Controller
 {
-    protected Messages $messageRepository;
+    protected $messages;
 
-    public function __construct(Messages $messageRepository)
+    public function __construct(MessagesInterface $messages)
     {
-        $this->messageRepository = $messageRepository;
+        $this->messages = $messages;
     }
  
     /**
@@ -28,7 +29,7 @@ class MessagesController extends Controller
      */
     public function index()
       {
-        $messages = $this->messageRepository->getPaginated();
+        $messages = $this->messages->getPaginated();
         return view('messages.index', ['messages' => $messages]);
     }  
 
@@ -54,7 +55,7 @@ class MessagesController extends Controller
 
 
 
-        $message = $this->messageRepository->store($validated);
+        $message = $this->messages->store($validated);
         event(new MessageSent($message)); 
         return redirect('/')->with('success', 'Mensaje enviado correctamente');
     }
@@ -64,7 +65,7 @@ class MessagesController extends Controller
      */
     public function show(string $id)
     {
-       $message = $this->messageRepository->findById($id);
+       $message = $this->messages->findById($id);
         return view('messages.show', ['message' => $message]);
     }
 
@@ -73,7 +74,7 @@ class MessagesController extends Controller
      */
     public function edit(string $id)
     {
-        $message = $this->messageRepository->findById($id);
+        $message = $this->messages->findById($id);
         return view('messages.edit', ['message' => $message]);
     }
 
@@ -82,7 +83,7 @@ class MessagesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $this->messageRepository->update($id, $request);
+        $this->messages->update($id, $request);
         
         return redirect()->route('mensajes.index');
     }
@@ -92,7 +93,7 @@ class MessagesController extends Controller
      */
     public function destroy(string $id)
     {
-        $this->messageRepository->destroy($id);
+        $this->messages->destroy($id);
         return redirect()->route('mensajes.index')->with('info', 'Mensaje eliminado correctamente');
     }
 }

@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\DB;
 /* DB::listen(function ($query) {
     echo "<pre>($query->sql)</pre>";
 }); */
+
+app()->bind(
+    App\Repositories\MessagesInterface::class,
+    App\Repositories\CacheMessages::class
+);
 // Quitar middleware 'can:admin-only' - La Policy se encarga de los permisos
 Route::middleware(['auth'])->group(function () {
     // Ruta resource completa para gestión de usuarios

@@ -4,25 +4,14 @@ namespace App\Repositories;
 use App\Models\Message;
 use Illuminate\Support\Facades\Cache;
 
-class Messages
+class Messages implements MessagesInterface
 {
 
       public function getPaginated(){
-        $currentPage = request('page', 1);
-        $key = 'messages.page.' . $currentPage;
-
-        // Cachear por página específica con tags
-        $messages = Cache::tags(['messages'])->rememberForever($key, function () use ($currentPage) {
-            // Forzar la página específica en la consulta
-            return Message::paginate(10, ['*'], 'page', $currentPage);
-        });
-        
-        return $messages;
+            return Message::paginate(10);
       }
       public function store($validated){
         $message = Message::create($validated);
-        Cache::tags(['messages'])->flush(); // Limpiar caché al crear un nuevo mensaje
-
         return $message;
     }
     public function findById($id){
@@ -35,10 +24,8 @@ class Messages
             'telefono',
             'mensaje',
         ]));
-        Cache::tags(['messages'])->flush(); // Limpiar caché al actualizar un mensaje
     }
     public function destroy($id){
          Message::findOrFail($id)->delete();
-         Cache::tags(['messages'])->flush(); // Limpiar caché al eliminar un mensaje
     }
 }
