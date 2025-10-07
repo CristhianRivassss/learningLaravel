@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Gate;
+use App\Repositories\MessagesInterface;
+use App\Repositories\CacheMessages;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+        $this->app->bind(MessagesInterface::class, CacheMessages::class);
+
         Schema::defaultStringLength(191);
         
         // Gates con NUEVA estructura de roles (tabla pivote)

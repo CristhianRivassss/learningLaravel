@@ -3,7 +3,7 @@
 namespace App\Models;
 Use \App\Models\User;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Presenters\MessagePresenter;
 class Message extends Model
 {
     // Permitir mass assignment para estos campos
@@ -28,5 +28,9 @@ class Message extends Model
     public function tags()
     {
         return $this->morphToMany(Tag::class, 'taggable');
+    }
+    public function present()
+    {
+        return new MessagePresenter($this);
     }
 }
