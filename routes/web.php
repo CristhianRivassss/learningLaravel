@@ -7,11 +7,19 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\MessagesController;
 use App\Models\Role;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 /* DB::listen(function ($query) {
     echo "<pre>($query->sql)</pre>";
 }); */
 
-
+Route::get('job', function(
+) {
+    Log::info('Route /job visited');
+    Log::info('Dispatching SendEmail job');
+    dispatch(new App\Jobs\SendEmail());
+    return 'Job dispatched!';
+});
+// Quitar middleware 'can:admin-only' - La Policy se encarga de los permisos
 // Quitar middleware 'can:admin-only' - La Policy se encarga de los permisos
 Route::middleware(['auth'])->group(function () {
     // Ruta resource completa para gestión de usuarios
