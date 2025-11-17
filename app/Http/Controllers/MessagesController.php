@@ -18,10 +18,12 @@ use App\Repositories\MessagesInterface;
 class MessagesController extends Controller
 {
     protected $messages;
+    protected $view;
 
-    public function __construct(MessagesInterface $messages)
+    public function __construct(MessagesInterface $messages, \Illuminate\Contracts\View\Factory $view)
     {
         $this->messages = $messages;
+        $this->view = $view;
     }
  
     /**
@@ -30,7 +32,7 @@ class MessagesController extends Controller
     public function index()
       {
         $messages = $this->messages->getPaginated();
-        return view('messages.index', ['messages' => $messages]);
+        return $this->view->make('messages.index', ['messages' => $messages]);
     }  
 
     /**
@@ -38,7 +40,7 @@ class MessagesController extends Controller
      */
     public function create()
     {
-        return view('messages.create');
+        return $this->view->make('messages.create');
     }
 
     /**
@@ -56,7 +58,7 @@ class MessagesController extends Controller
 
 
         $message = $this->messages->store($validated);
-        event(new MessageSent($message)); 
+        event(new MessageSent($message));
         return redirect('/')->with('success', 'Mensaje enviado correctamente');
     }
 

@@ -3,18 +3,16 @@
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Message;
 
-class MessageSent
+class MessageSent implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $message;
+    use SerializesModels;
+
+    public Message $message;
+
     /**
      * Create a new event instance.
      */
@@ -24,14 +22,37 @@ class MessageSent
     }
 
     /**
-     * Get the channels the event should broadcast on.
+     * The channel the event should broadcast on.
      *
-     * @return array<int, \Illuminate\Broadcasting\Channel>
+     * @return \Illuminate\Broadcasting\Channel
      */
-    public function broadcastOn(): array
+    public function broadcastOn(): Channel
+    {
+        return new Channel('messages');
+    }
+
+    /**
+     * Data to broadcast.
+     *
+     * @return array
+     */
+    public function broadcastWith(): array
     {
         return [
-            new PrivateChannel('channel-name'),
+            'id' => $this->message->id,
+            'nombre' => $this->message->nombre,
+            'email' => $this->message->email,
+            'mensaje' => $this->message->mensaje,
+            'user_id' => $this->message->user_id ?? null,
+            'created_at' => optional($this->message->created_at)->toDateTimeString(),
         ];
+    }
+
+    /**
+     * Optional: event name on the client.
+     */
+    public function broadcastAs(): string
+    {
+        return 'message.sent';
     }
 }

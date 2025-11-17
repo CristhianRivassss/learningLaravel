@@ -4,6 +4,12 @@
          bootstrap="vendor/autoload.php"
          colors="true"
 >
+    <!-- Explicación sencilla: Al ejecutar `vendor/bin/phpunit` se usa este archivo para:
+         1) Indicar dónde están las pruebas (tests/Unit, tests/Feature).
+         2) Cargar el bootstrap (vendor/autoload.php).
+         3) Fijar variables de entorno para pruebas (BD en memoria, mailer de prueba, colas síncronas, etc.).
+         4) Mostrar el resultado: '.' = prueba pasada; al final se muestra el resumen (ej. OK (2 tests, 2 assertions)).
+    -->
     <testsuites>
         <testsuite name="Unit">
             <directory>tests/Unit</directory>
