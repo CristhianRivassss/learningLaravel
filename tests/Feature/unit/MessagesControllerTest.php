@@ -74,7 +74,34 @@ class MessagesControllerTest extends TestCase
         $this->assertInstanceOf(\Illuminate\Http\RedirectResponse::class, $response);
         $this->assertTrue($response->isRedirect());
     }
+    public function testUpdate()
+    {
+        $id = 1;
+        $request = new \Illuminate\Http\Request();
 
+        $this->messageRepo->shouldReceive('update')
+            ->once()
+            ->with($id, Mockery::type(\Illuminate\Http\Request::class));
+
+        $response = $this->controller->update($request, $id);
+
+        $this->assertInstanceOf(\Illuminate\Http\RedirectResponse::class, $response);
+        $this->assertTrue($response->isRedirect());
+    }
+
+    public function testDestroy()
+    {
+        $id = 1;
+
+        $this->messageRepo->shouldReceive('destroy')
+            ->once()
+            ->with($id);
+
+        $response = $this->controller->destroy($id);
+
+        $this->assertInstanceOf(\Illuminate\Http\RedirectResponse::class, $response);
+        $this->assertTrue($response->isRedirect());
+    }
 
     protected function tearDown(): void
     {
